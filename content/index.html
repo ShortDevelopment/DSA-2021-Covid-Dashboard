@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corona Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(#48DD75, #0a665d);
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 0px 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            position: sticky;
+            top: 0px;
+        }
+
+        header>img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .card {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            margin: 10px;
+            padding: 5px 20px;
+            border-radius: 10px;
+        }
+    </style>
+    <style>
+        .mask-display {
+            --display-value: 50%;
+            --display-direction: -90deg;
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .mask-display>.mask {
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(var(--display-direction), #4CAF50 var(--display-value), #F44336 var(--display-value));
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            position: relative;
+        }
+
+        .mask-display>.display {
+            position: absolute;
+            left: 50%;
+            bottom: 0px;
+            transform: translate(-50%, 0px);
+            text-shadow: 0px 0px 10px #fff;
+        }
+    </style>
+
+    <script>
+        class App {
+
+            constructor() {
+                /** @type {App} */
+                this.query = (() => {
+                    // https://stackoverflow.com/a/13419367/15213858
+                    const urlSearchParams = new URLSearchParams(window.location.search);
+                    return Object.fromEntries(urlSearchParams.entries());
+                })();
+            }
+
+            loadTemplate(id) {
+                const tmp_ele = document.getElementById(id);
+                return document.importNode(tmp_ele.content.children[0], true);
+            }
+
+            showUI(id) {
+                const oldUIEle = document.querySelector("content");
+                if (oldUIEle) {
+                    document.body.removeChild(oldUIEle);
+                }
+                const ele = this.loadTemplate(id);
+                document.body.appendChild(ele);
+            }
+
+            setVarValue(valueObj) {
+                Object.keys(valueObj).forEach((id) => {
+                    Array.from(document.querySelectorAll(`.js_var_${id}`)).forEach((ele) => {
+                        ele.textContent = valueObj[id];
+                    });
+                });
+            }
+
+            /** @type {App} */
+            static current = new App();
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="logo.png" />
+        <h2>Corona Dashboard</h2>
+        <div style="flex: 1;"></div>
+        <h3><label class="js_var_landkreis"></label></h3>
+    </header>
+
+    <template id="select-page-content">
+        <content>
+            <h1>Anmelden!</h1>
+        </content>
+    </template>
+
+    <template id="main-page-content">
+        <content>
+            <div class="card">
+                <h2>Inzidenz - <label class="js_var_landkreis"></label></h2>
+                <h3>5.000</h3>
+            </div>
+
+            <div class="card">
+                <h2>Intensivbetten - <label class="js_var_bundesland">Baden-Württemberg</label></h2>
+                <div class="mask-display">
+                    <div class="mask" style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg');">
+                    </div>
+                    <label class="display">100%</label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Impfdosen - <label class="js_var_land">Deutschland</label></h2>
+                <div class="mask-display">
+                    <div class="mask"
+                        style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg;">
+                    </div>
+                    <label class="display">100%</label>
+                </div>
+            </div>
+        </content>
+    </template>
+
+    <script>
+        if (!App.current.query["q"]) {
+            App.current.showUI("select-page-content");
+        } else {
+            App.current.showUI("main-page-content");
+        }
+        const landkreis = App.current.query["q"] || "Keine Auswahl";
+        App.current.setVarValue({ landkreis });
+    </script>
+
+</body>
+
+</html>
