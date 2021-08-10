@@ -73,6 +73,27 @@
         }
     </style>
 
+    <style>
+        select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            border: 1px solid lightgray;
+            min-width: 300px;
+            height: 40px;
+            padding-left: 10px;
+            font-size: 16px;
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+            padding: 5px 35px 5px 5px;
+            cursor: pointer;
+            background: url("media/dropdown.png");
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            background-position: 96% center;
+        }
+    </style>
+
     <script>
         class App {
 
@@ -122,8 +143,15 @@
     </header>
 
     <template id="select-page-content">
-        <content>
-            <h1>Anmelden!</h1>
+        <content style="text-align: center;">
+            <h1 style="color: white;">Wilkommen!</h1>
+            <div class="card">
+                <h2>Wähle dein Bundesland</h2>
+                <select id="bundesländer"></select>
+                <h2>Wähle deinen Landkreis</h2>
+                <select id="landkreise"></select>
+                <div style="height:10px"></div>
+            </div>
         </content>
     </template>
 
