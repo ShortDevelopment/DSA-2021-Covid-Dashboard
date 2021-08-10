@@ -34,10 +34,17 @@ print(covid_data_intensiv[["bundesland", "bettenBelegtToBettenGesamtPercent",
       "intensivBettenBelegt", "intensivBettenGesamt"]].to_string())
 print(
     covid_data_vaccination[covid_data_vaccination["location"] == "Germany"].to_string())
+    
 # %%
-def ich_hasse_Python(x):
-    y = list(x)
-    y.sort()
-    return y
-covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})
-# ich hoffe ich muss github nicht auch hassen
+def getSelectPageData():
+    def ich_hasse_Python(x):
+        y = list(x)
+        y.sort()
+        return y
+    covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})
+
+# %%
+def getMainPageData(Kreis: str):
+    Kreis = "Aichach-Friedberg"
+    covid_data_rki[covid_data_rki["GEN"] == Kreis]
+    covid_data_rki[["BettenFrei"] == Kreis]
