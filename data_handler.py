@@ -35,3 +35,8 @@ print(covid_data_intensiv[["bundesland", "bettenBelegtToBettenGesamtPercent",
 print(
     covid_data_vaccination[covid_data_vaccination["location"] == "Germany"].to_string())
 # %%
+def ich_hasse_Python(x):
+    y = list(x)
+    y.sort()
+    return y
+covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})
