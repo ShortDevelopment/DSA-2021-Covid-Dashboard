@@ -40,3 +40,4 @@ def ich_hasse_Python(x):
     y.sort()
     return y
 covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})
+# ich hoffe ich muss github nicht auch hassen
