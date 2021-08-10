@@ -47,7 +47,6 @@
     </style>
     <style>
         .mask-display {
-            --display-value: 50%;
             --display-direction: -90deg;
             position: relative;
             width: 100px;
@@ -165,7 +164,7 @@
             <div class="card">
                 <h2>Intensivbetten - <label class="js_var_bundesland">Baden-Württemberg</label></h2>
                 <div class="mask-display">
-                    <div class="mask" style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg');">
+                    <div class="mask" style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg'); --display-value: 50%;">
                     </div>
                     <label class="display">100%</label>
                 </div>
@@ -175,7 +174,7 @@
                 <h2>Impfdosen - <label class="js_var_land">Deutschland</label></h2>
                 <div class="mask-display">
                     <div class="mask"
-                        style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg;">
+                        style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg; --display-value: 50%;">
                     </div>
                     <label class="display">100%</label>
                 </div>
