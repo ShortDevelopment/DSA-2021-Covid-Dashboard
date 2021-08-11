@@ -48,3 +48,5 @@ def getMainPageData(Kreis: str):
     Kreis = "Aichach-Friedberg"
     covid_data_rki[covid_data_rki["GEN"] == Kreis]
     covid_data_rki[["BettenFrei"] == Kreis]
+
+#hi
