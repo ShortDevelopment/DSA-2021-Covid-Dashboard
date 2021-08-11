@@ -24,7 +24,7 @@ def getVaccinationData() -> pandas.DataFrame:
 
 covid_data_rki = getRKIData()
 covid_data_intensiv = getIntensivData()
-covid_data_vaccination = getVaccinationData()
+covid_data_vaccination = getVaccinationData() # Blöde Idee von [vorname != "Simon" && vorname == Elias && nachname == Atmani]...
 
 print("Loaded Data")
 
