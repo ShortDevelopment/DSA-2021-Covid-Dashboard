@@ -243,16 +243,16 @@
                         <h3>Inzidenz: <label class="js_var_covid_kreis_inzidenz"></label></h3>
                         <h3>Inzidenzstufe</h3>
                         <div class="circle">
-                            <label class="js_var_covid_kreis_inzidenz"></label>
+                            <label class="js_var_inz"></label>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <h2>Intensivbetten - <label class="js_var_bundesland"></label></h2>
+                <h2>Intensivbetten-Belegung - <label class="js_var_bundesland"></label></h2>
                 <div class="horizontal">
-                    <div>
+                    <div class="horizontal" style="flex-direction: column;">
                         <h3>Gesammt</h3>
                         <div class="mask-display">
                             <div class="mask"
@@ -262,13 +262,33 @@
                             <label class="display js_var_bettenBelegtToBettenGesamtPercent"></label>
                         </div>
                     </div>
+                    <div class="horizontal" style="flex-direction: column;">
+                        <h3>Covid</h3>
+                        <div class="mask-display">
+                            <div class="mask"
+                                style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg'); --display-value: 50%;"
+                                id="intensiv_covid_mask_display">
+                            </div>
+                            <label class="display js_var_covidToIntensivBettenPercent"></label>
+                        </div>
+                    </div>
+                    <div class="horizontal" style="flex-direction: column;">
+                        <h3>Beatmet</h3>
+                        <div class="mask-display">
+                            <div class="mask"
+                                style="mask-image: url('media/local_hospital_black_24dp.svg'); --display-value: 50%; --display-direction: 180deg;"
+                                id="beatmet_mask_display">
+                            </div>
+                            <label class="display js_var_faelleCovidAktuellBeatmetToCovidAktuellPercent"></label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
                 <h2>Impfquote - <label class="js_var_land">Deutschland</label></h2>
                 <div class="horizontal">
-                    <div>
+                    <div class="horizontal" style="flex-direction: column;">
                         <h3>1x geimpft</h3>
                         <div class="mask-display">
                             <div class="mask"
@@ -278,7 +298,7 @@
                             <label class="display js_var_people_partly_vaccinated_per_hundred"></label>
                         </div>
                     </div>
-                    <div>
+                    <div class="horizontal" style="flex-direction: column;">
                         <h3>2x geimpft</h3>
                         <div class="mask-display">
                             <div class="mask"
@@ -294,20 +314,25 @@
             <script>
                 (async () => {
                     const data = await fetch(`/getMainPageData?kreis=${localStorage.getItem("q")}`).then((x) => x.json());
-                    const { bundesland, covid_kreis_inzidenz, covid_intensiv_data, neueste_deutsche_impfis } = data;
+                    const { bundesland, covid_kreis_inzidenz, inz, covid_intensiv_data, neueste_deutsche_impfis } = data;
                     App.current.setVarValue({ bundesland, covid_kreis_inzidenz: Math.round(covid_kreis_inzidenz) });
 
-                    const { bettenFreiToBettenGesamtPercent, bettenBelegtToBettenGesamtPercent } = covid_intensiv_data[0];
+                    const { bettenFreiToBettenGesamtPercent, bettenBelegtToBettenGesamtPercent, covidToIntensivBettenPercent, faelleCovidAktuellBeatmetToCovidAktuellPercent } = covid_intensiv_data[0];
                     document.querySelector("#intensiv_mask_display").style.setProperty("--display-value", `${bettenFreiToBettenGesamtPercent}%`);
 
                     const { people_partly_vaccinated_per_hundred, people_fully_vaccinated_per_hundred } = neueste_deutsche_impfis[0];
                     document.querySelector("#impf_mask_display").style.setProperty("--display-value", `${Math.round(people_partly_vaccinated_per_hundred)}%`);
                     document.querySelector("#impf_mask_display_full").style.setProperty("--display-value", `${Math.round(people_fully_vaccinated_per_hundred)}%`);
+                    document.querySelector("#beatmet_mask_display").style.setProperty("--display-value", `${Math.round(100 - faelleCovidAktuellBeatmetToCovidAktuellPercent)}%`);
+                    document.querySelector("#intensiv_covid_mask_display").style.setProperty("--display-value", `${Math.round(100 - covidToIntensivBettenPercent)}%`);
 
                     App.current.setVarValue({
+                        inz,
                         bettenBelegtToBettenGesamtPercent: `${bettenBelegtToBettenGesamtPercent}%`,
                         people_partly_vaccinated_per_hundred: `${Math.round(people_partly_vaccinated_per_hundred)}%`,
-                        people_fully_vaccinated_per_hundred: `${Math.round(people_fully_vaccinated_per_hundred)}%`
+                        people_fully_vaccinated_per_hundred: `${Math.round(people_fully_vaccinated_per_hundred)}%`,
+                        faelleCovidAktuellBeatmetToCovidAktuellPercent: `${faelleCovidAktuellBeatmetToCovidAktuellPercent}%`,
+                        covidToIntensivBettenPercent: `${covidToIntensivBettenPercent}%`
                     });
                 })();
             </script>
