@@ -1,12 +1,14 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 import json
 import data_handler
 
 
 class ServerHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        path = urlparse(self.path).path
+        url = urlparse(self.path)
+        params = parse_qs(url.query)
+        path = url.path
         
         if path == '/getSelectPageData':
             content = bytes(json.dumps(data_handler.getSelectPageData()), 'utf-8')
@@ -16,7 +18,8 @@ class ServerHandler(BaseHTTPRequestHandler):
             return
 
         if path == '/getMainPageData':
-            content = bytes(f"API", 'utf-8')
+            kreis = params["kreis"][0]
+            content = bytes(json.dumps(data_handler.getMainPageData(kreis)), 'utf-8')
             self.send_response(200)
             self.end_headers()
             self.wfile.write(content)

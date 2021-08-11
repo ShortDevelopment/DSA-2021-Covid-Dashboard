@@ -24,16 +24,9 @@ def getVaccinationData() -> pandas.DataFrame:
 
 covid_data_rki = getRKIData()
 covid_data_intensiv = getIntensivData()
-covid_data_vaccination = getVaccinationData() # Blöde Idee von [vorname != "Simon" && vorname == Elias && nachname == Atmani]...
+covid_data_vaccination = getVaccinationData()
 
 print("Loaded Data")
-
-# %%
-print(covid_data_rki[["GEN", "BL", "cases7_per_100k"]].to_string())
-print(covid_data_intensiv[["bundesland", "bettenBelegtToBettenGesamtPercent",
-      "intensivBettenBelegt", "intensivBettenGesamt"]].to_string())
-print(
-    covid_data_vaccination[covid_data_vaccination["location"] == "Germany"].to_string())
     
 # %%
 def getSelectPageData():
@@ -46,8 +39,15 @@ def getSelectPageData():
 # %%
 def getMainPageData(Kreis: str):
     output_data = dict()
-    covid_kreis = covid_data_rki[covid_data_rki["GEN"] == Kreis]
-    covid_kreis_inzidenz = covid_kreis["cases7_per_100k"].index[0]
+    covid_kreis = covid_data_rki[covid_data_rki["GEN"] == Kreis].reset_index()
+
+    bundesland = covid_kreis["BL"][0]
+    output_data["bundesland"] = bundesland
+    bundesland = bundesland.upper().replace("-", "_").replace("Ä", "AE").replace("Ö", "OE").replace("Ü", "UE")
+
+    covid_kreis_inzidenz = covid_kreis["cases7_per_100k"][0]
+    output_data["covid_kreis_inzidenz"] = covid_kreis_inzidenz
+
     inz = 0
     if covid_kreis_inzidenz < 10:
         inz = 1
@@ -57,25 +57,16 @@ def getMainPageData(Kreis: str):
         inz = 3
     if covid_kreis_inzidenz > 50:
         inz = 4
-    output_data["covid_kreis_inzidenz"] = covid_kreis_inzidenz
+    
     output_data["inz"] = inz
+
     deutsche_impfis = pandas.DataFrame(covid_data_vaccination[covid_data_vaccination["location"] == "Germany"])
-    neueste_deutsche_impfis = deutsche_impfis.tail(1)
+    neueste_deutsche_impfis = deutsche_impfis.tail(1).to_dict('r')
     output_data["neueste_deutsche_impfis"] = neueste_deutsche_impfis
 
-getMainPageData("Aichach-Friedberg")
+    covid_intensiv_data = covid_data_intensiv[covid_data_intensiv["bundesland"] == bundesland].to_dict('r')
+    output_data["covid_intensiv_data"] = covid_intensiv_data
 
-#hi
+    return output_data
 
-# %%
-print(covid_data_intensiv)
-
-
-
-
-# %%
-bundesland = "Baden-Württemberg"
-inhalt = bundesland
-grossbuchstaben = inhalt.upper()
-print(grossbuchstaben)
 # %%
