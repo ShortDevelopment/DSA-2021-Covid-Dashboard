@@ -59,6 +59,9 @@ def getMainPageData(Kreis: str):
         inz = 4
     output_data["covid_kreis_inzidenz"] = covid_kreis_inzidenz
     output_data["inz"] = inz
+    deutsche_impfis = pandas.DataFrame(covid_data_vaccination[covid_data_vaccination["location"] == "Germany"])
+    neueste_deutsche_impfis = deutsche_impfis.tail(1)
+    output_data["neueste_deutsche_impfis"] = neueste_deutsche_impfis
 
 getMainPageData("Aichach-Friedberg")
 
@@ -68,7 +71,11 @@ getMainPageData("Aichach-Friedberg")
 print(covid_data_intensiv)
 
 
-deutsche_impfis = pandas.DataFrame(covid_data_vaccination[covid_data_vaccination["location"] == "Germany"])
-neueste_deutsche_impfis = deutsche_impfis.tail(1)
-print(neueste_deutsche_impfis)
 
+
+# %%
+bundesland = "Baden-Württemberg"
+inhalt = bundesland
+grossbuchstaben = inhalt.upper()
+print(grossbuchstaben)
+# %%
