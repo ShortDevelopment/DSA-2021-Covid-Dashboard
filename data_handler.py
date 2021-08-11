@@ -45,14 +45,27 @@ def getSelectPageData():
 
 # %%
 def getMainPageData(Kreis: str):
+    output_data = dict()
     covid_kreis = covid_data_rki[covid_data_rki["GEN"] == Kreis]
-    covid_kreis_inzidenz  = covid_kreis[["cases7_per_100k"]][0]
-    covid_kreis_betten = covid_data_intensiv[["BettenFrei"] == Kreis]
+    covid_kreis_inzidenz = covid_kreis["cases7_per_100k"].index[0]
+    #covid_kreis_betten = covid_data_intensiv[["BettenFrei"] == Kreis]
     covid_kreis_vaccination = covid_data_vaccination[covid_data_vaccination["location"] == "Germany"]
     print(covid_kreis_vaccination)
+    inz = 0
+    if covid_kreis_inzidenz < 10:
+        inz = 1
+    if 10 < covid_kreis_inzidenz < 35:
+        inz = 2
+    if 35 < covid_kreis_inzidenz < 50:
+        inz = 3
+    if covid_kreis_inzidenz > 50:
+        inz = 4
+    output_data["covid_kreis_inzidenz"] = covid_kreis_inzidenz
 
 getMainPageData("Aichach-Friedberg")
 
 #hi
 
 # %%
+
+
