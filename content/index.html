@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
     <style>
         body {
@@ -93,6 +94,21 @@
             background-size: auto 60%;
             background-position: 96% center;
         }
+
+        .button {
+            font-family: 'Material Icons';
+            font-size: 20pt;
+            margin: 10px 20px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            border: 1px solid lightgray;
+        }
     </style>
 
     <script>
@@ -140,6 +156,7 @@
         <img src="logo.png" />
         <h2>Corona Dashboard</h2>
         <div style="flex: 1;"></div>
+        <button class="button" onclick="document.location.href = '?reset=null';">home</button>
         <h3><label class="js_var_landkreis"></label></h3>
     </header>
 
@@ -148,11 +165,48 @@
             <h1 style="color: white;">Wilkommen!</h1>
             <div class="card">
                 <h2>Wähle dein Bundesland</h2>
-                <select id="bundesländer"></select>
+                <select id="select_bundesländer"
+                    onchange="Handle_BL_Select_Change(this.options[this.selectedIndex].text);">
+                    <option disabled selected></option>
+                </select>
                 <h2>Wähle deinen Landkreis</h2>
-                <select id="landkreise"></select>
+                <select id="select_landkreise"
+                    onchange="Handle_LK_Select_Change(this.options[this.selectedIndex].text);"></select>
                 <div style="height:10px"></div>
             </div>
+            <script>
+                var SelectData = {};
+                (async () => {
+                    SelectData = await fetch("/getSelectPageData").then((x) => x.json());
+                    console.log(SelectData)
+                    const container = document.querySelector("#select_bundesländer");
+                    Object.keys(SelectData).forEach((key) => {
+                        const ele = document.createElement('option');
+                        ele.textContent = key;
+                        container.appendChild(ele);
+                    });
+                })();
+
+                function Handle_BL_Select_Change(key) {
+                    const container = document.querySelector("#select_landkreise");
+                    container.innerHTML = "";
+
+                    const dummy_ele = document.createElement('option');
+                    dummy_ele.setAttribute("disabled", "");
+                    dummy_ele.setAttribute("selected", "");
+                    container.appendChild(dummy_ele);
+
+                    SelectData[key].forEach((value) => {
+                        const ele = document.createElement('option');
+                        ele.textContent = value;
+                        container.appendChild(ele);
+                    });
+                }
+
+                function Handle_LK_Select_Change(value) {
+                    document.location.href = `?q=${value}`;
+                }
+            </script>
         </content>
     </template>
 
@@ -166,7 +220,8 @@
             <div class="card">
                 <h2>Intensivbetten - <label class="js_var_bundesland">Baden-Württemberg</label></h2>
                 <div class="mask-display">
-                    <div class="mask" style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg'); --display-value: 50%;">
+                    <div class="mask"
+                        style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg'); --display-value: 50%;">
                     </div>
                     <label class="display">100%</label>
                 </div>
@@ -185,12 +240,16 @@
     </template>
 
     <script>
-        if (!App.current.query["q"]) {
-            App.current.showUI("select-page-content");
-        } else {
-            App.current.showUI("main-page-content");
+        if (App.current.query["q"]) {
+            localStorage.setItem("q", App.current.query["q"]);
         }
-        const landkreis = App.current.query["q"] || "Keine Auswahl";
+        if (localStorage.hasOwnProperty("q") && !App.current.query["reset"]) {
+            App.current.showUI("main-page-content");
+        } else {
+            App.current.showUI("select-page-content");
+            localStorage.removeItem("q");
+        }
+        const landkreis = localStorage.getItem("q") || "Keine Auswahl";
         App.current.setVarValue({ landkreis });
     </script>
 

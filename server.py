@@ -1,13 +1,21 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 import json
+import data_handler
 
 
 class ServerHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = urlparse(self.path).path
+        
+        if path == '/getSelectPageData':
+            content = bytes(json.dumps(data_handler.getSelectPageData()), 'utf-8')
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(content)
+            return
 
-        if path == '/api':
+        if path == '/getMainPageData':
             content = bytes(f"API", 'utf-8')
             self.send_response(200)
             self.end_headers()

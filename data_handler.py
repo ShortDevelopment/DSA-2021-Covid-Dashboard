@@ -41,7 +41,7 @@ def getSelectPageData():
         y = list(x)
         y.sort()
         return y
-    covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})
+    return covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})["GEN"].to_dict()
 
 # %%
 def getMainPageData(Kreis: str):
