@@ -48,7 +48,6 @@ def getMainPageData(Kreis: str):
     output_data = dict()
     covid_kreis = covid_data_rki[covid_data_rki["GEN"] == Kreis]
     covid_kreis_inzidenz = covid_kreis["cases7_per_100k"].index[0]
-    #covid_kreis_betten = covid_data_intensiv[["BettenFrei"] == Kreis]
     inz = 0
     if covid_kreis_inzidenz < 10:
         inz = 1
@@ -66,5 +65,7 @@ getMainPageData("Aichach-Friedberg")
 #hi
 
 # %%
+print(covid_data_intensiv)
 
 
+# %%
