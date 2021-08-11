@@ -68,4 +68,7 @@ getMainPageData("Aichach-Friedberg")
 print(covid_data_intensiv)
 
 
-# %%
+deutsche_impfis = pandas.DataFrame(covid_data_vaccination[covid_data_vaccination["location"] == "Germany"])
+neueste_deutsche_impfis = deutsche_impfis.tail(1)
+print(neueste_deutsche_impfis)
+
