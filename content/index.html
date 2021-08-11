@@ -109,6 +109,30 @@
         .button:hover {
             border: 1px solid lightgray;
         }
+
+        .horizontal {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .horizontal>* {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #3949AB;
+            color: #fff;
+            font-size: 30pt;
+        }
     </style>
 
     <script>
@@ -214,37 +238,56 @@
         <content>
             <div class="card">
                 <h2>Inzidenz - <label class="js_var_landkreis"></label></h2>
-                <h3><label class="js_var_covid_kreis_inzidenz"></label></h3>
+                <div class="horizontal">
+                    <div class="horizontal" style="flex-direction: column;">
+                        <h3>Inzidenz: <label class="js_var_covid_kreis_inzidenz"></label></h3>
+                        <h3>Inzidenzstufe</h3>
+                        <div class="circle">
+                            <label class="js_var_covid_kreis_inzidenz"></label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
                 <h2>Intensivbetten - <label class="js_var_bundesland"></label></h2>
-                <div class="mask-display">
-                    <div class="mask"
-                        style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg'); --display-value: 50%;"
-                        id="intensiv_mask_display">
+                <div class="horizontal">
+                    <div>
+                        <h3>Gesammt</h3>
+                        <div class="mask-display">
+                            <div class="mask"
+                                style="mask-image: url('media/airline_seat_individual_suite_black_24dp.svg'); --display-value: 50%;"
+                                id="intensiv_mask_display">
+                            </div>
+                            <label class="display js_var_bettenBelegtToBettenGesamtPercent"></label>
+                        </div>
                     </div>
-                    <label class="display js_var_bettenBelegtToBettenGesamtPercent"></label>
                 </div>
             </div>
 
             <div class="card">
                 <h2>Impfquote - <label class="js_var_land">Deutschland</label></h2>
-                <h3>1x geimpft</h3>
-                <div class="mask-display">
-                    <div class="mask"
-                        style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg; --display-value: 50%;"
-                        id="impf_mask_display">
+                <div class="horizontal">
+                    <div>
+                        <h3>1x geimpft</h3>
+                        <div class="mask-display">
+                            <div class="mask"
+                                style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg; --display-value: 50%;"
+                                id="impf_mask_display">
+                            </div>
+                            <label class="display js_var_people_partly_vaccinated_per_hundred"></label>
+                        </div>
                     </div>
-                    <label class="display js_var_people_partly_vaccinated_per_hundred"></label>
-                </div>
-                <h3>2x geimpft</h3>
-                <div class="mask-display">
-                    <div class="mask"
-                        style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg; --display-value: 50%;"
-                        id="impf_mask_display_full">
+                    <div>
+                        <h3>2x geimpft</h3>
+                        <div class="mask-display">
+                            <div class="mask"
+                                style="mask-image: url('media/vaccines_black_24dp.svg'); --display-direction: 0deg; --display-value: 50%;"
+                                id="impf_mask_display_full">
+                            </div>
+                            <label class="display js_var_people_fully_vaccinated_per_hundred"></label>
+                        </div>
                     </div>
-                    <label class="display js_var_people_fully_vaccinated_per_hundred"></label>
                 </div>
             </div>
 
