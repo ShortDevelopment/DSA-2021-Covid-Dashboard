@@ -321,7 +321,7 @@
                     document.querySelector("#intensiv_mask_display").style.setProperty("--display-value", `${bettenFreiToBettenGesamtPercent}%`);
 
                     const { people_partly_vaccinated_per_hundred, people_fully_vaccinated_per_hundred } = neueste_deutsche_impfis[0];
-                    document.querySelector("#impf_mask_display").style.setProperty("--display-value", `${Math.round(people_partly_vaccinated_per_hundred)}%`);
+                    document.querySelector("#impf_mask_display").style.setProperty("--display-value", `${Math.round(people_partly_vaccinated_per_hundred + people_fully_vaccinated_per_hundred)}%`);
                     document.querySelector("#impf_mask_display_full").style.setProperty("--display-value", `${Math.round(people_fully_vaccinated_per_hundred)}%`);
                     document.querySelector("#beatmet_mask_display").style.setProperty("--display-value", `${Math.round(100 - faelleCovidAktuellBeatmetToCovidAktuellPercent)}%`);
                     document.querySelector("#intensiv_covid_mask_display").style.setProperty("--display-value", `${Math.round(100 - covidToIntensivBettenPercent)}%`);
@@ -329,7 +329,7 @@
                     App.current.setVarValue({
                         inz,
                         bettenBelegtToBettenGesamtPercent: `${bettenBelegtToBettenGesamtPercent}%`,
-                        people_partly_vaccinated_per_hundred: `${Math.round(people_partly_vaccinated_per_hundred)}%`,
+                        people_partly_vaccinated_per_hundred: `${Math.round(people_partly_vaccinated_per_hundred + people_fully_vaccinated_per_hundred)}%`,
                         people_fully_vaccinated_per_hundred: `${Math.round(people_fully_vaccinated_per_hundred)}%`,
                         faelleCovidAktuellBeatmetToCovidAktuellPercent: `${faelleCovidAktuellBeatmetToCovidAktuellPercent}%`,
                         covidToIntensivBettenPercent: `${covidToIntensivBettenPercent}%`
