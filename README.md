@@ -10,6 +10,7 @@ In Zusammenarbeit mit [@leoleinxy](https://github.com/leoleinxy) && [@Nieleo](ht
 - [ ] Fehler der Impfdaten beheben ?!
 - [ ] Anzeigen, welche Mapnahmen anhand der Inzidenzstufe gelten
 - [ ] Letztes Aktualisierungsdatum anzeigen
+- [ ] Regelmäßige Updates der Daten im Hintergrund (Server + pot. Client)
 
 ## Nice to have
 - [ ] besseres Design
