@@ -6,19 +6,19 @@ import pandas
 
 def getRKIData() -> pandas.DataFrame:
     url = "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=cases7_per_100k%20desc&resultOffset=0&resultRecordCount=500&resultType=standard&cacheHint=true"
-    data = json.loads(requests.get(url).text)
+    data = requests.get(url).json
     return pandas.DataFrame([x["attributes"] for x in data["features"]])
 
 
 def getIntensivData() -> pandas.DataFrame:
     url = "https://www.intensivregister.de/api/public/reporting/laendertabelle?format=json&onlyErwachsenenBetten=true&onlyHaupversorgerCovid19=false"
-    data = json.loads(requests.get(url).text)
+    data = requests.get(url).json
     return pandas.DataFrame(data["data"])
 
 
 def getVaccinationData() -> pandas.DataFrame:
     url = "https://covid.ourworldindata.org/data/internal/megafile--vaccinations-bydose.json"
-    data = json.loads(requests.get(url).text)
+    data = requests.get(url).json
     return pandas.DataFrame(data)
 
 
