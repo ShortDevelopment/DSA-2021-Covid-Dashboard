@@ -27,23 +27,24 @@ covid_data_intensiv = getIntensivData()
 covid_data_vaccination = getVaccinationData()
 
 print("Loaded Data")
-    
-# %%
-def getSelectPageData():
-    def ich_hasse_Python(x):
-        y = list(x)
-        y.sort()
-        return y
-    return covid_data_rki.groupby('BL').agg({'GEN':ich_hasse_Python})["GEN"].to_dict()
 
 # %%
+
+
+def getSelectPageData():
+    return covid_data_rki.groupby('BL').agg({'GEN': lambda x: sorted(list(x))})["GEN"].to_dict()
+
+# %%
+
+
 def getMainPageData(Kreis: str):
     output_data = dict()
     covid_kreis = covid_data_rki[covid_data_rki["GEN"] == Kreis].reset_index()
 
     bundesland = covid_kreis["BL"][0]
     output_data["bundesland"] = bundesland
-    bundesland = bundesland.upper().replace("-", "_").replace("Ä", "AE").replace("Ö", "OE").replace("Ü", "UE")
+    bundesland = bundesland.upper().replace(
+        "-", "_").replace("Ä", "AE").replace("Ö", "OE").replace("Ü", "UE")
 
     covid_kreis_inzidenz = covid_kreis["cases7_per_100k"][0]
     output_data["covid_kreis_inzidenz"] = covid_kreis_inzidenz
@@ -57,16 +58,22 @@ def getMainPageData(Kreis: str):
         inz = 3
     if covid_kreis_inzidenz > 50:
         inz = 4
-    
+
     output_data["inz"] = inz
 
-    deutsche_impfis = pandas.DataFrame(covid_data_vaccination[covid_data_vaccination["location"] == "Germany"])
+    deutsche_impfis = pandas.DataFrame(
+        covid_data_vaccination[covid_data_vaccination["location"] == "Germany"])
     neueste_deutsche_impfis = deutsche_impfis.tail(1).to_dict('r')
     output_data["neueste_deutsche_impfis"] = neueste_deutsche_impfis
 
-    covid_intensiv_data = covid_data_intensiv[covid_data_intensiv["bundesland"] == bundesland].to_dict('r')
+    covid_intensiv_data = covid_data_intensiv[covid_data_intensiv["bundesland"] == bundesland].to_dict(
+        'r')
     output_data["covid_intensiv_data"] = covid_intensiv_data
 
     return output_data
+
+# %%
+getSelectPageData()
+# %%
 
 # %%
