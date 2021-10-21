@@ -11,7 +11,7 @@ class ServerHandler(BaseHTTPRequestHandler):
         path = url.path
         
         if path == '/getSelectPageData':
-            content = bytes(json.dumps(data_handler.getSelectPageData()), 'utf-8')
+            content = bytes(json.dumps(data_handler.get_select_page_data()), 'utf-8')
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
@@ -20,7 +20,7 @@ class ServerHandler(BaseHTTPRequestHandler):
 
         if path == '/getMainPageData':
             kreis = params["kreis"][0]
-            content = bytes(json.dumps(data_handler.getMainPageData(kreis)), 'utf-8')
+            content = bytes(json.dumps(data_handler.get_main_page_data(kreis)), 'utf-8')
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
@@ -29,7 +29,7 @@ class ServerHandler(BaseHTTPRequestHandler):
 
         if path == '/':
             path = '/index.html'
-        path = f"content\{path[1:]}"
+        path = f"./content/{path[1:]}"
 
         try:
             with open(path, "rb") as reader:
